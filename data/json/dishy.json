@@ -1,0 +1,52 @@
+{
+    "dishGetStatus": {
+        "deviceInfo": {
+            "id": "private",
+            "hardwareVersion": "rev1_pre_production",
+            "softwareVersion": "d9aff5fa-0334-49bc-b69d-b92a9c7871fa.release",
+            "countryCode": "CA"
+        },
+        "deviceState": {
+            "uptimeS": "17689"
+        },
+        "snr": 9,
+        "obstructionStats": {
+            "fractionObstructed": 0.007713454,
+            "wedgeFractionObstructed": [
+                0,
+                0,
+                0,
+                0.07179697,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.09033856,
+                0,
+                0
+            ],
+            "wedgeAbsFractionObstructed": [
+                0,
+                0,
+                0,
+                0.0027877446,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.0049257088,
+                0,
+                0
+            ],
+            "validS": 15271.104,
+            "last24hObstructedS": 88
+        },
+        "alerts": [],
+        "state": "CONNECTED",
+        "downlinkThroughputBps": 20988.297,
+        "uplinkThroughputBps": 28848.424,
+        "popPingLatencyMs": 34.666668
+    }
+}

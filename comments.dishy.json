@@ -1,0 +1,52 @@
+{
+    "dishGetStatus": {
+        "deviceInfo": {
+            "id": "private", <<<<<<<<< Dish ID
+            "hardwareVersion": "rev1_pre_production", <<<<<<<< When does this change?
+            "softwareVersion": "d9aff5fa-0334-49bc-b69d-b92a9c7871fa.release", <<< Need To Track This
+            "countryCode": "CA" <<<< Maybe get a central REP that records everyones country that is running this?
+        },
+        "deviceState": {
+            "uptimeS": "17289"  <<<< Dish Uptime
+        },
+        "snr": 6,
+        "obstructionStats": {
+            "fractionObstructed": 0.007916448,   <<<<< % (*100) the dish has been obstructed.
+            "wedgeFractionObstructed": [  <<<<< 30 deg increments * 12 for 360 view. % of obstructions over 24 hours in that angle
+                0,
+                0,
+                0,
+                0.07179697,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.09116312,
+                0,
+                0
+            ],
+            "wedgeAbsFractionObstructed": [  <<<<< 30 deg increments * 12 for 360 view. % of the angle that is obstructed?
+                0,
+                0,
+                0,
+                0.0028611096,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0.0050553386,
+                0,
+                0
+            ],
+            "validS": 14976.094,  <<<<< Unknown. How long not obstructed in Seconds?
+            "last24hObstructedS": 88   <<<< Total Seconds obstructed in last 24 hours.
+        },
+        "alerts": [],  <<< Have not received alerts yet to play with.
+        "state": "CONNECTED",   <<< Sel Explanatory
+        "downlinkThroughputBps": 13555.99,  <<<< Throughput at the moment. My JS calcs might be off. Saw 170 on a speedtest.. this only peaked at 152.
+        "uplinkThroughputBps": 25081.938, <<<< Throughput at the moment. My JS calcs might be off. Saw 170 on a speedtest.. this only peaked at 152.
+        "popPingLatencyMs": 32.933334  <<<< Your current latency.
+    }
+}
