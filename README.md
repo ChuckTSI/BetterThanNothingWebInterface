@@ -12,14 +12,17 @@ Some notes:
   <li> Make sure your web server is on the network that dishy is connected to
 </ul>
 
-The are almost no comments and bad coding practices.
+The are almost no comments and bad coding practices.<br>
 Good luck!
 
-Future Vision:
-Downtime History (using MySQL) 
-Using RAM Disk to avoid excessive writes to SSDs
+<strong>Future Vision:</strong><br>
+Downtime History (using MySQL)<br>
+Using RAM Disk to avoid excessive writes to SSDs<br>
 
-Hoping they give us a little more data like Satellite name(s) connected, (lat,long of Sat OR which wedge it's in) and Est distance to work with. 
-Would like to do flyover tracing.
+<strong>Wish List:</strong><br>
+Hoping they give us a little more data like Satellite name(s) connected, (lat,long of Sat OR which wedge it's in) and Est distance to work with. <br>
+Would like to do flyover tracing.<br>
 Just saying Mr Dishy Developers :)
+
+Any other ideas, bring it.
 
