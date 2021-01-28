@@ -23,6 +23,7 @@ History (using MySQL or other lightweight SQL for Storage)<br>
 Using RAM Disk to avoid excessive writes to SSDs<br>
 
 <strong>Wish List:</strong><br>
+Speedtest directly from Satellite (Crazy. I know).
 Hoping they give us a little more data like Satellite name(s) connected, (lat,long of Sat OR which wedge it's in) and Est distance to work with. <br>
 Would like to do flyover tracing.<br>
 Just saying Mr Dishy Developers :)
