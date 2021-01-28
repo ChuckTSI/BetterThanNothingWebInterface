@@ -65,9 +65,13 @@ window.onload = function() {
 	window.myPolarArea = Chart.PolarArea(ctx, config);
 };
 
-function bytes_to_megabits(bytes){	
+function bytes_to_megabits(bits){	
+	/*
 	var  units = bytes / 2500;
 	var Mb = (units * 0.0191) / 10 ; // 2500 Bytes = 0.0191 Megabits;
+	return Mb.toFixed(2)+' Mbps';
+	*/
+	var Mb = bits/1048576;
 	return Mb.toFixed(2)+' Mbps';
 }
 
