@@ -9,6 +9,7 @@ Some notes:
 
 <ul>
   <li> This is a hot mess and developed on Ubuntu Machine w/ LAMP, GRPCurl and speedtest-cli
+  <li> To use a ramdisk, simply mount a ramdisk called 'ramdisk' in the root of the project.
   <li> I used CDNs for JQuery,Bootstrap, etc. May break at any time.
   <li> For speedtest, you will need to create a cron to run every 15 mins (or sooner) check scripts/cron/php/speedtest.php
   <li> Take a look at the config.inc.php file in the root folder.
