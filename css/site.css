@@ -1,0 +1,42 @@
+* { 
+	font-family: 'Montserrat', sans-serif; 
+}
+
+#main_container {
+	 max-width: 500px;
+}
+
+/* HEADER */
+
+#starlinklogo {
+	width: 200px !important; 
+	margin-left: -290px;
+}
+
+#pill_beta {
+	margin-left: -180px; 
+	margin-top: -70px;
+}
+
+#tagline {
+	margin-left: -60px; 
+	margin-top: 0px;
+}
+
+#state {
+	margin-left: 40px; 
+	margin-top: 105px;
+}
+
+#user {
+	margin-top: -0px; 
+	margin-left:210px
+}
+
+#username {
+	margin-left: -100px;
+}
+
+.section_title {
+	/*font-size: 18px;*/
+}
