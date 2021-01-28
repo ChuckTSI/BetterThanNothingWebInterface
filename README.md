@@ -1,6 +1,8 @@
 # BetterThanNothingWebInterface
 A Web Interface for Seeing Data from Dishy in the Better Than Nothing Beta by Starlink
 
+A big thank you to https://raw.githubusercontent.com/sparky8512/starlink-grpc-tools for his work to explain the data.
+
 This will show you most basic stats but will give you a visual chart/compass showing obstructions.
 
 Some notes:
@@ -16,7 +18,7 @@ The are almost no comments and bad coding practices.<br>
 Good luck!
 
 <strong>Future Vision:</strong><br>
-Downtime History (using MySQL)<br>
+History (using MySQL or other lightweight SQL for Storage)<br>
 Using RAM Disk to avoid excessive writes to SSDs<br>
 
 <strong>Wish List:</strong><br>
