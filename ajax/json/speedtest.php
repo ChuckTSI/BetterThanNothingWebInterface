@@ -1,6 +1,7 @@
 <?php
+require('../../config.inc.php');
 
-$contents = file_get_contents('/control/tmp/speedtest.status');
+$contents = file_get_contents($_CONFIG['results']['speed_test']);
 
 $array = explode("\n",$contents);
 
@@ -10,10 +11,10 @@ $farray['hosted']['by'] = $hosted[1][0];
 $farray['hosted']['city'] = $hosted[2][0];
 $farray['hosted']['distance'] = $hosted[3][0];
 $farray['hosted']['ping'] = $hosted[4][0];
-$farray['speeds']['down'] = str_replace('Download: ','',$array[6]);
-$farray['speeds']['up'] = str_replace('Upload: ','',$array[8]);
-$farray['speeds']['mtime'] = date('F j, Y, g:i a',filemtime('/control/tmp/speedtest.status'));
-$farray['speeds']['next'] = date('F j, Y, g:i a',filemtime('/control/tmp/speedtest.status')+300);
+$farray['speeds']['down'] = str_replace('Mbit/s','Mbps',str_replace('Download: ','',$array[6]));
+$farray['speeds']['up'] = str_replace('Mbit/s','Mbps',str_replace('Upload: ','',$array[8]));
+$farray['speeds']['mtime'] = date('F j, Y, g:i a',filemtime($_CONFIG['results']['speed_test']));
+$farray['speeds']['next'] = date('F j, Y, g:i a',filemtime($_CONFIG['results']['speed_test'])+300);
 
 echo json_encode($farray,JSON_PRETTY_PRINT);
 
