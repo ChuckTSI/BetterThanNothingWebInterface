@@ -1,7 +1,7 @@
 # BetterThanNothingWebInterface
 A Web Interface for Seeing Data from Dishy in the Better Than Nothing Beta by Starlink
 
-This will show you most basic stats but will give you a visual chart/compass showing obestructions.
+This will show you most basic stats but will give you a visual chart/compass showing obstructions.
 
 Some notes:
 
