@@ -6,12 +6,18 @@ $_CONFIG["path"] = '/var/www/html/btnwi';
 
 // Change these at your own peril.
 
-// Files
-$_CONFIG['files']['maxspeed'] = $_CONFIG["path"].'/data/ser/maxspeeds.ser'; // Serialized array of max speeds up and down.
-$_CONFIG['files']['dishy'] = $_CONFIG["path"].'/data/json/dishy.json'; // Serialized array of max speeds up and down.
-$_CONFIG['files']['dishy_history_12'] = $_CONFIG["path"].'/data/json/history_12.json'; // Last 12 Hours
+if(is_dir($_CONFIG["path"].'/ramdisk')){
+	$datadir = 'ramdisk';
+} else {
+	$datadir = 'data';
+}
 
-$_CONFIG['results']['speed_test'] = $_CONFIG["path"].'/data/txt/speedtest.result'; // Plain text file
+
+// Files
+$_CONFIG['files']['maxspeed'] = $_CONFIG["path"].'/'.$datadir.'/maxspeeds.ser'; // Serialized array of max speeds up and down.
+$_CONFIG['files']['dishy'] = $_CONFIG["path"].'/'.$datadir.'/dishy.json'; // Serialized array of max speeds up and down.
+$_CONFIG['files']['dishy_history_12'] = $_CONFIG["path"].'/'.$datadir.'/history_12.json'; // Last 12 Hours
+$_CONFIG['results']['speed_test'] = $_CONFIG["path"].'/'.$datadir.'/speedtest.txt'; // Plain text file
 
 // Urls
 $_CONFIG['ajax']['speed_test'] = 'ajax/json/speedtest.php';
