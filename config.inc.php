@@ -3,6 +3,7 @@
 // Change These
 $_CONFIG["username"] = "Chuck<strong>TSI</strong>";
 $_CONFIG["path"] = '/var/www/html';
+$_CONFIG["speedtest_frequency"] = '5'; // Minutes
 
 // Change these at your own peril.
 

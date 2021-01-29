@@ -53,41 +53,12 @@ require('boot.inc.php');
 			echo '<a href="?"><button class="btn btn-primary">I FIXED IT. TRY AGAIN</button></a>';
 			die();
 		}		
+		
+		include('header.html.php');
+		
 		?>
 
-		<div class="row" style="margin-bottom: 10px; margin-left: 20px;">
-			
-			<div class="col col-12">
-				<center>
-					<span class="badge badge-pill badge-success float-left" id="state"></span>
-					<img src="img/sl.png" id="starlinklogo">
-					
-					<div id="pill_beta">
-						<span class="badge badge-pill badge-primary"  ;" onClick="location='/chuck.php'">BETA</span>
-						<!--<span class="badge badge-pill badge-danger" style="margin-left: 0px; ;" onClick="location='/chuck.php'">LAT 44.8</span>-->
-						
-					</div>
-					<div id="tagline">
-						<small style="width: 100%;"><em>"Better Than Nothing Statistics"</em> &nbsp;&nbsp;&nbsp;<span class="text-muted"></span></small>
-					</div>
-					<div id="user">
-						
-						<h1 class=" float-right">
-							<sup>
-								<small>
-									<small id="latency">--- ms</small>
-								</small>
-							</sup>
-						</h1>
-
-						<h1 id="username"><?php echo $_CONFIG["username"]; ?></h1>
-						
-					</div>
-										
-				</center>
-			</div>
 		
-		</div>
 
 		
 
@@ -109,7 +80,7 @@ require('boot.inc.php');
 		
 		<!-- THROUGHPUT -->
 		<div class="row" style="margin-top: 20px;">
-			<div class="col-12 <?php echo $_CONFIG['styles']['bg_bars']; ?>"><div style="white-space: nowrap;" class="section_title"><i class="fa fa-file-import"></i> <strong>THROUGHPUT</strong></div> </div>
+			<div class="col-12 <?php echo $_CONFIG['styles']['bg_bars']; ?>"><div style="white-space: nowrap;" class="section_title"><i class="fa fa-file-import"></i> <strong>THROUGHPUT</strong>  <a href="javascript://" onClick="resetajax('peak');"><sup style="float: right; margin-top: 5px;" class="badge badge-pill badge-warning">RESET PEAK</sup></a></div> </div>
 		</div>
 		<div class="row border-bottom">
 			<div class="col-3 text-right"><strong>DOWN</strong></div>

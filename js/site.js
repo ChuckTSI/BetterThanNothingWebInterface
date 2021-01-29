@@ -178,7 +178,7 @@ function get_speedtest(){
 		url: ajax_speedtest_url , 
 		dataType: 'json',
 		success: function (data) { 
-				console.log(data)
+				//console.log(data)
 			   $("#downloadtest").html(data.speeds.down);
 				$("#uploadtest").html(data.speeds.up);
 				$("#speedtest").html(data.speeds.mtime);
@@ -187,6 +187,21 @@ function get_speedtest(){
 		}
 	});
 	setTimeout(get_speedtest,900000); // Every 15 Mins.
+	
+}
+
+function resetajax(toreset){
+	if(toreset == 'peak'){
+		$.ajax({ 
+			type: 'GET', 
+			url: 'ajax/json/reset_maxspeed.php' , 
+			dataType: 'json',
+			success: function (data) { 
+					//console.log(data)			   
+					//$("#nextspeedtest").html('<strong>Next Run</strong>: '+data.speeds.next);				
+			}
+		});
+	}
 	
 }
 
