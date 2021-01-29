@@ -1,5 +1,6 @@
 <h1>Install Guide</h1> (written using Ubuntu as dev server)
 
+<strong>Requirements:</strong> PHP,MySQL,Git,Screen,grpcurl
 
 1. Setup an Ubuntu Server (If you use other flavors/OSs, you are on your own)<br>
 2. Ensure there is a LAMP stack on your server and you can access it<br>
