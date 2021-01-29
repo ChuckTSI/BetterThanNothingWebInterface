@@ -11,7 +11,7 @@ if(is_dir($_CONFIG["path"].'/ramdisk')){
 } else {
 	$datadir = 'data';
 }
-
+$_CONFIG["data_path"] = '/var/www/html/'.$datadir;
 
 // Files
 $_CONFIG['files']['maxspeed'] = $_CONFIG["path"].'/'.$datadir.'/maxspeeds.ser'; // Serialized array of max speeds up and down.

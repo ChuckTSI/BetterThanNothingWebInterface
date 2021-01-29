@@ -7,22 +7,22 @@
             "countryCode": "CA"
         },
         "deviceState": {
-            "uptimeS": "44678"
+            "uptimeS": "45569"
         },
         "snr": 9,
         "obstructionStats": {
-            "fractionObstructed": 0.0053057494,
+            "fractionObstructed": 0.0053830836,
             "wedgeFractionObstructed": [
                 0,
                 0,
                 0,
-                0.07645942,
+                0.076116964,
                 0,
                 0,
                 0,
                 0,
                 0.15884404,
-                0.039536845,
+                0.040240712,
                 0,
                 0
             ],
@@ -30,23 +30,23 @@
                 0,
                 0,
                 0,
-                0.0020371503,
+                0.0021423078,
                 0,
                 0,
                 0,
                 0,
-                0.0013768744,
-                0.0018917246,
+                0.0013390387,
+                0.0019017368,
                 0,
                 0
             ],
-            "validS": 31775.043,
-            "last24hObstructedS": 145
+            "validS": 32208.172,
+            "last24hObstructedS": 151
         },
         "alerts": [],
         "state": "CONNECTED",
-        "downlinkThroughputBps": 78567.7,
-        "uplinkThroughputBps": 78618.03,
-        "popPingLatencyMs": 30.266666
+        "downlinkThroughputBps": 11484.004,
+        "uplinkThroughputBps": 26692.55,
+        "popPingLatencyMs": 31.5625
     }
 }

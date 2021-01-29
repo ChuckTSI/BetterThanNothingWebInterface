@@ -45,6 +45,16 @@ require('boot.inc.php');
 
 	<div class="container" id="main_container">
 
+		<?php
+		if(is_array(@$errors)){
+			foreach($errors AS $error){
+				echo '<div class="alert alert-danger"><div style="font-size: 14px;">'.$error.'</div></div>';
+			}
+			echo '<a href="?"><button class="btn btn-primary">I FIXED IT. TRY AGAIN</button></a>';
+			die();
+		}		
+		?>
+
 		<div class="row" style="margin-bottom: 10px; margin-left: 20px;">
 			
 			<div class="col col-12">
