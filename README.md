@@ -1,6 +1,9 @@
 # BetterThanNothingWebInterface
 A Web Interface for Seeing Data from Dishy in the Better Than Nothing Beta by Starlink
 
+<strong>Known Bugs</strong><br>
+- Line Chart for throughput sometimes stops working
+
 A big thank you to https://raw.githubusercontent.com/sparky8512/starlink-grpc-tools for his work to explain the data.
 
 ** <b>IMPORTANT</b>: This needs your server to be using the Starlink router OR you being able to ensure that your server can see the 192.168.100.1 address using routing. *** 
