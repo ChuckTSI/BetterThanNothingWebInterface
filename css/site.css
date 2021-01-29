@@ -35,3 +35,11 @@
 .section_title {
 	/*font-size: 18px;*/
 }
+
+.nocolor {
+	color: inherit !important;
+}
+
+.moreinfo {
+	cursor: pointer;
+}

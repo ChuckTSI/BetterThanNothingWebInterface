@@ -8,7 +8,7 @@
 while true ; do php /var/www/html/btnwi/scripts/cron/php/dishy.cron.php & printf . & sleep 1; done
 
 */
-
+error_reporting('E_FATAL');
 require(dirname(__FILE__).'/../../../config.inc.php');
 if(strtoupper($_CONFIG["dishy"]['update_method']) == "CLI"){
 	

@@ -1,4 +1,11 @@
 var obstructed = 1;
+var uptimeTracker = 1;
+var uptimeRepeatCounter = 0;
+var peakPingTracker = 1;
+const sparkpingline_data = []
+const sparkuploadline_data = []
+const sparkdownloadline_data = []
+
 
 // This updates the chart with Obstruction Data
 var wedgeFractionObstructedDataSet = function(obj) {
@@ -65,14 +72,28 @@ var config = {
 window.onload = function() {
 	var ctx = document.getElementById('chart-area');
 	window.myPolarArea = Chart.PolarArea(ctx, config);
+
+	$(".moreinfo").on('click', function(event){
+		 event.stopPropagation();
+		 event.stopImmediatePropagation();
+		 var thisclicked = $(this).attr('moreinfo');
+		 console.log(thisclicked);
+		 openmodal('html',thisclicked)
+	});
+
+//<a href="javascript://" class="nocolor" onClick="openmodal('html','coming-soon.html');">
+
 };
 
+
+
+
 function bytes_to_megabits(bits){	
-	/*
-	var  units = bytes / 2500;
-	var Mb = (units * 0.0191) / 10 ; // 2500 Bytes = 0.0191 Megabits;
+	var Mb = bits/1048576;
 	return Mb.toFixed(2)+' Mbps';
-	*/
+}
+
+function bytes_to_megabits(bits){	
 	var Mb = bits/1048576;
 	return Mb.toFixed(2)+' Mbps';
 }
@@ -118,6 +139,8 @@ function get_dishy(){
 				data.dishGetStatus.state = "DL UNRESPONSIVE";
 			}
 
+				$("#sw_rev").text(data.dishGetStatus.deviceInfo.softwareVersion)
+
 			   if(data.dishGetStatus.downlinkThroughputBps != ""){
 					var downspeed = bytes_to_megabits(data.dishGetStatus.downlinkThroughputBps);
 			   } else {
@@ -128,34 +151,126 @@ function get_dishy(){
 			   } else {
 					var upspeed = "--";
 			   }
-			   $("#downloadlinkthru").text(downspeed);
-			   $("#uploadlinkthru").text(upspeed);
-			   $("#maxthroughputdown").text(bytes_to_megabits(data.dishGetStatus.maxspeeds.down));
-			   $("#maxthroughputup").text(bytes_to_megabits(data.dishGetStatus.maxspeeds.up));
-			   if(data.dishGetStatus.state == "CONNECTED"){
+
+			   //#####################################################################
+			   // HEADER
+				if(data.dishGetStatus.state == "CONNECTED"){
 				 $("#state").addClass('badge-success');
 				 $("#state").removeClass('badge-danger'); 
 				 $("#state").html('<i class="fas fa-satellite-dish"></i> '+data.dishGetStatus.state);
+				  $("#nosat").addClass("fade");
 			   } else {
 				 $("#state").addClass('badge-danger');
 				 $("#state").removeClass('badge-success');
 				 $("#state").text(data.dishGetStatus.state);
+				 $("#nosat").removeClass("fade");
 			   }
 
-			  
 			   if(data.dishGetStatus.popPingLatencyMs){
+					
+					/*
+					For competitive online gaming
+					Ookla says players should be in "winning" shape with latency or ping of 59ms or less, 
+					and "in the game" with latency or ping of up to 129ms
+					*/
+					
 					var latency = data.dishGetStatus.popPingLatencyMs.toFixed();
-					if(latency < 40){
+
+					if(latency < 60){
 						$("#latency").css('color','green');
-					} else if(latency < 60){
+					} else if(latency < 130){
 						$("#latency").css('color','orange');
-					} else if(latency >= 60){
+					} else if(latency >= 130){
 						$("#latency").css('color','red');
 					}
-				 $("#latency").text(latency+' ms');
+
+					if(parseInt(latency) > parseInt(peakPingTracker)){	
+						peakPingTracker = latency;						
+					}
+
+					$("#jspingpeak").text(peakPingTracker+'ms')
+					sparklineconfig.chartRangeMax = peakPingTracker
+					$("#latency").text(latency+' ms');
+
+					if(sparkpingline_data.length > maxGraphS){
+						sparkpingline_data.shift();
+					}		
+					var latency_sum = 0;
+					for( var i = 0; i < sparkpingline_data.length; i++ ){
+						latency_sum += parseInt( sparkpingline_data[i], 10 ); //don't forget to add the base
+					}
+					var latency_avg = (latency_sum/sparkpingline_data.length).toFixed();
+					$("#avglatency").text(latency_avg+' ms');
+					
+					/*if(latency_avg < 60){
+						sparklineconfig.barColor = 'green';
+					} else if(latency_avg < 130){
+						sparklineconfig.barColor = 'orange';
+					} else if(latency_avg >= 130){
+						sparklineconfig.barColor = 'red';
+					}*/
+					
+					//console.log(`The sum is: ${latency_sum}. The average is: ${latency_avg}.`);
+					sparkpingline_data.push(latency)
+					$('#sparklinedash').sparkline(sparkpingline_data, sparklineconfig)
+
 			   } else {
 					$("#latency").text('--- ms');
 			   }
+	
+
+				//#####################################################################
+				// INFO
+				if(data.dishGetStatus.method == "CLI"){
+					if(uptimeTracker != data.dishGetStatus.deviceState.uptimeS){
+						uptimeTracker = data.dishGetStatus.deviceState.uptimeS
+						$("#updatenotrunning").remove();
+						uptimeRepeatCounter = 0;
+					} else {
+						uptimeRepeatCounter++;
+						if($("#updatenotrunning").length < 1 && uptimeRepeatCounter > 2){
+							$("#main_container").prepend('<div class="alert alert-danger" id="updatenotrunning"><div style="font-size: 14px;">It seems as though your <i>starlink.update.sh</i> is not running. This message will go away once you fix the issue.</div></div>');
+						}
+					}
+				}
+				$("#uptimeS").text(format_sec(data.dishGetStatus.deviceState.uptimeS));
+				$("#snr").text(data.dishGetStatus.snr);
+				
+				$("#gmethod").text(data.dishGetStatus.method);
+
+				//#####################################################################
+				// THROUGHPUT
+				$("#downloadlinkthru").text(downspeed);				
+				$("#uploadlinkthru").text(upspeed);	
+				
+				var maxthroughdown = bytes_to_megabits(data.dishGetStatus.maxspeeds.down);
+				var maxthroughup = bytes_to_megabits(data.dishGetStatus.maxspeeds.up);
+				
+				// UPLOAD CHART
+				sparklineconfig2.chartRangeMax = parseFloat(maxthroughup.match(/[\d\.]+/))
+				sparkuploadline_data.push(parseFloat(upspeed.match(/[\d\.]+/)))		
+				if(sparkuploadline_data.length > maxGraphS){
+					sparkuploadline_data.shift();
+				}					
+				$('#sparklinedash2').sparkline(sparkuploadline_data, sparklineconfig2)
+				
+				
+				// DOWNLOAD CHART
+				sparklineconfig3.chartRangeMax = parseFloat(maxthroughdown.match(/[\d\.]+/))
+				sparkdownloadline_data.push(parseFloat(downspeed.match(/[\d\.]+/)))		
+				if(sparkdownloadline_data.length >  maxGraphS){
+					sparkdownloadline_data.shift();
+				}					
+				$('#sparklinedash3').sparkline(sparkdownloadline_data, sparklineconfig3)
+
+				$("#maxthroughputdown").text(maxthroughdown);
+				$("#maxthroughputup").text(maxthroughup);
+
+				
+
+				//#####################################################################
+				// OBSTRUCTIONS
+			   
 				$("#fractionObstructed").text((data.dishGetStatus.obstructionStats.fractionObstructed*100).toFixed(2)+'%');
 				if(obstructed != "" && obstructed != data.dishGetStatus.obstructionStats.last24hObstructedS){
 					obstructed = data.dishGetStatus.obstructionStats.last24hObstructedS;
@@ -164,10 +279,20 @@ function get_dishy(){
 				if(obstructed == data.dishGetStatus.obstructionStats.last24hObstructedS){
 					$("#obstruction_icon").addClass("fade");
 				}
-				$("#last24hObstructedS").text(format_sec(data.dishGetStatus.obstructionStats.last24hObstructedS));
-				$("#uptimeS").text(format_sec(data.dishGetStatus.deviceState.uptimeS));
-				$("#snr").text(data.dishGetStatus.snr);
+				
+				var twentyFourHoursS = 3600*24;
+				if(data.dishGetStatus.deviceState.uptimeS < twentyFourHoursS){
+					var obstructionUptime = data.dishGetStatus.deviceState.uptimeS
+				} else {
+					var obstructionUptime= twentyFourHoursS
+				}
+				
+				var obstructionDowntime = data.dishGetStatus.obstructionStats.last24hObstructedS/obstructionUptime;
+				$("#last24hObstructedS").text(format_sec(data.dishGetStatus.obstructionStats.last24hObstructedS)+ ' ('+obstructionDowntime.toFixed(3)+'%)');	
 				wedgeFractionObstructedDataSet(data.dishGetStatus.obstructionStats.wedgeFractionObstructed);
+				
+				
+
 				//console.log(config.data.datasets);
 				
 				
@@ -216,5 +341,31 @@ function resetajax(toreset){
 	
 }
 
+function openmodal(folder,modal_template){
+
+		$.ajax({ 
+			type: 'GET', 
+			url: 'ajax/'+folder+'/'+modal_template , 
+			dataType: 'html',
+			success: function (data) { 
+					$("#modal-content").html(data);	
+					$("#onlyModal").modal("show");
+			}, 
+			error: function (data) { 
+					alert('errror');
+			}, 
+		});
+	
+
+	
+}
+
+function resetvar(whichvar){
+	if(whichvar == 'peakPingTracker'){
+		peakPingTracker = 1;
+	}
+}
+
 get_dishy();
 get_speedtest();
+

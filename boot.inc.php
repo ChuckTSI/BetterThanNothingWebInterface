@@ -7,3 +7,10 @@ if(getcwd() != $_CONFIG["path"]){
 if(!is_writeable($_CONFIG["data_path"])){
 	$errors[] = '<h4 class="alert-heading"><strong>Cannot write to data folder</strong></h4>Please make the '.$_CONFIG["data_path"].' folder world writeable.';
 }
+
+if(is_dir($_CONFIG["path"].'/ramdisk')){
+	$string = shell_exec("mountpoint '".$_CONFIG["path"]."/ramdisk"."'");
+	if(strstr($string,'is not a mountpoint')){
+		$errors[] = '<h4 class="alert-heading"><strong>Ramdisk is not a ramdisk</strong></h4>Please make the '.$_CONFIG["data_path"].' a ramdisk or delete the folder from your install path.';
+	}
+}
