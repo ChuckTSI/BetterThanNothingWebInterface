@@ -1,5 +1,6 @@
 <?php
 require('config.inc.php');
+require('boot.inc.php');
 ?>
 
 <!DOCTYPE html>
