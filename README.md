@@ -21,7 +21,6 @@ Good luck!
 
 <strong>Future Vision:</strong><br>
 History (using MySQL or other lightweight SQL for Storage)<br>
-Using RAM Disk to avoid excessive writes to SSDs<br>
 
 <strong>Wish List:</strong><br>
 Speedtest directly from Satellite (Crazy. I know).<br?
