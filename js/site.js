@@ -1,3 +1,5 @@
+var obstructed = 1;
+
 // This updates the chart with Obstruction Data
 var wedgeFractionObstructedDataSet = function(obj) {
 	config.data.datasets[0].data = obj;	
@@ -132,13 +134,15 @@ function get_dishy(){
 			   $("#maxthroughputup").text(bytes_to_megabits(data.dishGetStatus.maxspeeds.up));
 			   if(data.dishGetStatus.state == "CONNECTED"){
 				 $("#state").addClass('badge-success');
-				 $("#state").removeClass('badge-danger');
+				 $("#state").removeClass('badge-danger'); 
+				 $("#state").html('<i class="fas fa-satellite-dish"></i> '+data.dishGetStatus.state);
 			   } else {
 				 $("#state").addClass('badge-danger');
 				 $("#state").removeClass('badge-success');
+				 $("#state").text(data.dishGetStatus.state);
 			   }
 
-			   $("#state").text(data.dishGetStatus.state);
+			  
 			   if(data.dishGetStatus.popPingLatencyMs){
 					var latency = data.dishGetStatus.popPingLatencyMs.toFixed();
 					if(latency < 40){
@@ -153,6 +157,13 @@ function get_dishy(){
 					$("#latency").text('--- ms');
 			   }
 				$("#fractionObstructed").text((data.dishGetStatus.obstructionStats.fractionObstructed*100).toFixed(2)+'%');
+				if(obstructed != "" && obstructed != data.dishGetStatus.obstructionStats.last24hObstructedS){
+					obstructed = data.dishGetStatus.obstructionStats.last24hObstructedS;
+					$("#obstruction_icon").removeClass("fade");
+				} 
+				if(obstructed == data.dishGetStatus.obstructionStats.last24hObstructedS){
+					$("#obstruction_icon").addClass("fade");
+				}
 				$("#last24hObstructedS").text(format_sec(data.dishGetStatus.obstructionStats.last24hObstructedS));
 				$("#uptimeS").text(format_sec(data.dishGetStatus.deviceState.uptimeS));
 				$("#snr").text(data.dishGetStatus.snr);

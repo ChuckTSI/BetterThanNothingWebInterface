@@ -9,8 +9,7 @@
 /* HEADER */
 
 #starlinklogo {
-	width: 200px !important; 
-	margin-left: -290px;
+	width: 220px !important;
 }
 
 #pill_beta {
@@ -23,10 +22,6 @@
 	margin-top: 0px;
 }
 
-#state {
-	margin-left: 40px; 
-	margin-top: 105px;
-}
 
 #user {
 	margin-top: -0px; 
