@@ -234,7 +234,7 @@ require('boot.inc.php');
 				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;LASTRUN</strong></div> </div>
 				<div class="col-9 text-left"><small><span style="white-space: nowrap;" id="speedtest" style=""></span> | Runs every 15 mins </small> </div>
 				<div class="col-3 text-right">&nbsp;</div>
-				<div class="col-9 col-lg-12">					
+				<div class="col-9">					
 					<small class="text-muted"><a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['speed_test_history_basename']; ?>">DOWNLOAD HISTORY</a> .:| Total Tests: <strong><span id="total_speed_tests"></span></strong>|:. </small> 
 				</div>
 				<!--<div class="col-12 col-lg-12"><small><i class="fa fa-clock"></i> <span style="white-space: nowrap;" id="nextspeedtest" style=""></span></small></div>-->
