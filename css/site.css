@@ -2,14 +2,19 @@
 	font-family: 'Montserrat', sans-serif; 
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 #main_container {
-	 max-width: 500px;
+	 max-width: 560px;
 }
 
 /* HEADER */
 
 #starlinklogo {
-	width: 220px !important;
+	width: 200px !important;
 }
 
 #pill_beta {

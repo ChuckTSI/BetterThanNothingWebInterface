@@ -24,6 +24,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.1] - 2021-01-30
+
+### Added
+- Obstructions can now be recorded for historical. $_CONFIG["record"]['obstructions'] = true;
+- Playback the Obstruction.
+
+### Changed
+- UI More Stable
+
+
+### Removed
+
 
 
 

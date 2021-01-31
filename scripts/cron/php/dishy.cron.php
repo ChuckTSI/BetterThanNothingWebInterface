@@ -36,4 +36,22 @@ if(strtoupper($_CONFIG["dishy"]['update_method']) == "CLI"){
 
 	$status['dishGetStatus']['deviceInfo']['id'] = 'private';
 	file_put_contents($_CONFIG['files']['dishy'],json_encode($status, JSON_PRETTY_PRINT));
+	
+	if($_CONFIG["record"]['obstructions']){		
+		$file = escapeshellarg($_CONFIG['results']['obstruction_log']); // for the security concious (should be everyone!)
+		$line = shell_exec('tail -n 1 '.$file);
+		$lineexp = explode(",",$line);
+		unset($lineexp[0]);
+		unset($lineexp[1]);
+		$lineimp = str_replace(PHP_EOL,"",implode(",",$lineexp));
+		$wedge = str_replace(PHP_EOL,"",implode(",",str_replace("\n","",$status['dishGetStatus']['obstructionStats']['wedgeFractionObstructed'])));
+		if($wedge != $lineimp){
+			echo "\n Obstruction Change Recorded\n";
+			$entry = time().','.$status['dishGetStatus']['obstructionStats']['fractionObstructed'].','.$wedge."\n";
+			file_put_contents($_CONFIG['results']['obstruction_log'], $entry, FILE_APPEND | LOCK_EX);
+		} 		
+	}
+
+
+
 }

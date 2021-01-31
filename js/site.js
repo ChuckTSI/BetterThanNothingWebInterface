@@ -1,3 +1,4 @@
+var paused = false;
 var obstructed = 1;
 var uptimeTracker = 1;
 var uptimeRepeatCounter = 0;
@@ -46,7 +47,11 @@ var config = {
 			'WNN-N'
 		]
 	},
-	options: {
+	options: {		
+		tooltips: {
+			enabled: false
+		},
+		startAngle: 30,
 		responsive: true,
 		legend: {
 			display: false,
@@ -124,6 +129,7 @@ function format_sec(time) {
 	return ret;
 }
 
+var timer_get_dishy;
 
 function get_dishy(){
 
@@ -289,25 +295,40 @@ function get_dishy(){
 				
 				var obstructionDowntime = data.dishGetStatus.obstructionStats.last24hObstructedS/obstructionUptime;
 				$("#last24hObstructedS").text(format_sec(data.dishGetStatus.obstructionStats.last24hObstructedS)+ ' ('+obstructionDowntime.toFixed(3)+'%)');	
-				wedgeFractionObstructedDataSet(data.dishGetStatus.obstructionStats.wedgeFractionObstructed);
-				
-				
-
+				if(obstruction_play_status == false){
+					wedgeFractionObstructedDataSet(data.dishGetStatus.obstructionStats.wedgeFractionObstructed);
+				}
 				//console.log(config.data.datasets);
 				
 				
 		}
-	});
-	setTimeout(get_dishy,1000);
+	});	
+	
+	timer_get_dishy = setTimeout(get_dishy,1000);
 }
 
-function obstruction_update(){
-	window.myPolarArea.update();
-	setTimeout(obstruction_update,5000);
+function pause_it(){
+
+	if(paused == false){
+		paused = true;		
+		clearTimeout(timer_get_dishy);
+		clearTimeout(timer_get_speedtest);
+		console.log('paused')
+		$('#pause_button').html('<i class="fa fa-play"></i>');
+	} else {
+		paused = false;
+		get_dishy();
+		get_speedtest();
+		console.log('unpaused')
+		$('#pause_button').html('<i class="fa fa-pause"></i>');
+	}
+
+	
 }
 
-setTimeout(obstruction_update,100);
 
+
+var timer_get_speedtest
 function get_speedtest(){
 	$.ajax({ 
 		type: 'GET', 
@@ -318,12 +339,103 @@ function get_speedtest(){
 			   $("#downloadtest").html(data.speeds.down);
 				$("#uploadtest").html(data.speeds.up);
 				$("#speedtest").html(data.speeds.mtime);
-				//$("#nextspeedtest").html('<strong>Next Run</strong>: '+data.speeds.next);
-			
+				//$("#nextspeedtest").html('<strong>Next Run</strong>: '+data.speeds.next);			
 		}
 	});
-	setTimeout(get_speedtest,900000); // Every 15 Mins.
+	timer_get_speedtest = setTimeout(get_speedtest,60000); // Every 15 Mins.
 	
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+var obstruction_obj;
+var obstruction_play_key = 0;
+var timer_play_obstructions;
+var obstruction_play_status = false;
+var perc_per_play_obstructions;
+
+function play_obstructions(){
+
+	var total_items = obstruction_obj.length;
+	perc_per_play_obstructions = 100/total_items;
+
+	if(total_items < obstruction_play_key){
+		clearTimeout(timer_play_obstructions);
+		obstruction_play_key = 0;
+		obstruction_play_status = false;
+
+	} else {
+		$.each(obstruction_obj, function( index, values ) {
+
+			 if(index == obstruction_play_key && values != ''){
+				$("#pause_obs_playback_button").addClass('fade');
+				$("#live_obs_button").removeClass('fade');
+				$("#playback_obs_perc_container").removeClass('fade');
+				obstruction_play_status = true;
+				var t = values.split(",");
+				s = t.slice(1);
+				wedgeFractionObstructedDataSet(s);				  
+				obstruction_play_key++;
+				var newwidth = perc_per_play_obstructions*(index+2);
+				$("#playback_obs_perc").css('width',newwidth+'%');
+				var milliseconds = t[0] * 1000 
+				var dateObject = new Date(milliseconds)
+				var humanDateFormat = dateObject.toLocaleString();
+				$("#obsdatetime").html('<div class="badge badge-pill badge-info">RECORDED</div> '+humanDateFormat)
+				setTimeout(function(){window.myPolarArea.update()},100);
+				timer_play_obstructions = setTimeout(play_obstructions,400);
+				return false; 
+			 }
+
+			 if(values == ''){
+				clearTimeout(timer_play_obstructions);
+				obstruction_play_key = 0;
+				obstruction_play_status = false;
+			 }
+		 });
+	}	
+}
+
+function live_obstructions(){
+	obstruction_play_status = false;
+	obstruction_update();
+	obstruction_play_key = 0;
+	clearTimeout(timer_play_obstructions);
+		
+	$("#pause_obs_playback_button").removeClass('fade');
+	$("#live_obs_button").addClass('fade');
+	$("#playback_obs_perc_container").addClass('fade');
+}
+
+function obstruction_update(){
+	if(obstruction_play_status == false){
+		window.myPolarArea.update();
+		setTimeout(obstruction_update,1000);
+		$("#obsdatetime").html('<div class="badge badge-pill badge-success" style="position: absolute; font-size: 14px; top: -20px;">LIVE</div>');
+	}
+}
+
+
+var timer_get_obstructions_records
+function obstructions_records(){
+	if(obstruction_play_status == false){
+		//if(console.log(obstruction_play_key)
+		$.ajax({ 
+			type: 'GET', 
+			url: 'ajax/json/obstruction_playback.php' , 
+			dataType: 'json',
+			success: function (data) { 
+				//console.log(data.length)
+				obstruction_obj = data.obs;
+				$("#fractionObstructedCount").text(data.obs.length);
+			}
+		});
+	}
+
+	timer_get_obstructions_records = setTimeout(obstructions_records,5000); // Every 5 seconds
+
 }
 
 function resetajax(toreset){
@@ -367,5 +479,8 @@ function resetvar(whichvar){
 }
 
 get_dishy();
+obstructions_records();
+setTimeout(obstruction_update,500);
 get_speedtest();
+
 

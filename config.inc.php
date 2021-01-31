@@ -3,10 +3,18 @@
 // Change These
 $_CONFIG["username"] = "Chuck<strong>TSI</strong>";
 $_CONFIG["path"] = '/var/www/html';
-$_CONFIG["speedtest_frequency"] = '5'; // Minutes
 $_CONFIG["max_graph_seconds"] = '160'; // Seconds
+$_CONFIG["record"]['obstructions'] = true; // false or true. Only records changes in obtructions!
 
 // Change these at your own peril.
+
+
+// FutureDBItems (Do not set to to true yet)
+$_CONFIG["db"] = false;
+$_CONFIG["db_type"] = 'mysql';
+$_CONFIG["db_user"] = 'root';
+$_CONFIG["db_pass"] = '';
+
 
 if(is_dir($_CONFIG["path"].'/ramdisk')){
 	$datadir = 'ramdisk';
@@ -20,6 +28,7 @@ $_CONFIG['files']['maxspeed'] = $_CONFIG["path"].'/'.$datadir.'/maxspeeds.ser'; 
 $_CONFIG['files']['dishy'] = $_CONFIG["path"].'/'.$datadir.'/dishy.json'; // Serialized array of max speeds up and down.
 $_CONFIG['files']['dishy_history_12'] = $_CONFIG["path"].'/'.$datadir.'/history_12.json'; // Last 12 Hours
 $_CONFIG['results']['speed_test'] = $_CONFIG["path"].'/'.$datadir.'/speedtest.txt'; // Plain text file
+$_CONFIG['results']['obstruction_log'] = $_CONFIG["path"].'/'.$datadir.'/obstructions_log.txt'; // Plain text file
 
 // Urls
 $_CONFIG['ajax']['speed_test'] = 'ajax/json/speedtest.php';
@@ -31,7 +40,8 @@ $_CONFIG["dishy"]['update_method'] = 'CLI'; // options are: CLI (up to you to se
 $_CONFIG["dishy"]['address'] = '192.168.100.1:9200';
 $_CONFIG["dishy"]['get_status'] = "grpcurl -plaintext -d '{\"get_status\":{}}' ".$_CONFIG["dishy"]['address']." SpaceX.API.Device.Device/Handle";
 $_CONFIG["dishy"]['get_history'] = "grpcurl -plaintext -d '{\"get_history\":{}}' ".$_CONFIG["dishy"]['address']." SpaceX.API.Device.Device/Handle";
-$_CONFIG["max_history"] = 43199;
+$_CONFIG["max_history"] = 43199; // This is max vals in gprcurl get_history().
 
 // Useless stuff
 $_CONFIG['styles']['bg_bars'] = 'bg-light'; // https://getbootstrap.com/docs/4.0/utilities/colors/
+$_CONFIG["speedtest_frequency"] = '5'; // Minutes (Not used right now)
