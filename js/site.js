@@ -255,19 +255,31 @@ function get_dishy(){
 				
 				var maxthroughdown = bytes_to_megabits(data.dishGetStatus.maxspeeds.down);
 				var maxthroughup = bytes_to_megabits(data.dishGetStatus.maxspeeds.up);
+
+				if(upspeed == "--"){
+					sparkline_upspeed = 0;
+				} else {
+					sparkline_upspeed = parseFloat(upspeed.match(/[\d\.]+/));
+				}
 				
 				// UPLOAD CHART
 				sparklineconfig2.chartRangeMax = parseFloat(maxthroughup.match(/[\d\.]+/))
-				sparkuploadline_data.push(parseFloat(upspeed.match(/[\d\.]+/)))		
+				sparkuploadline_data.push(sparkline_upspeed)		
 				if(sparkuploadline_data.length > maxGraphS){
 					sparkuploadline_data.shift();
 				}					
 				$('#sparklinedash2').sparkline(sparkuploadline_data, sparklineconfig2)
 				
 				
+				if(downspeed == "--"){
+					sparkline_downspeed = 0;
+				} else {
+					sparkline_downspeed = parseFloat(downspeed.match(/[\d\.]+/));
+				}
+
 				// DOWNLOAD CHART
 				sparklineconfig3.chartRangeMax = parseFloat(maxthroughdown.match(/[\d\.]+/))
-				sparkdownloadline_data.push(parseFloat(downspeed.match(/[\d\.]+/)))		
+				sparkdownloadline_data.push(sparkline_downspeed)		
 				if(sparkdownloadline_data.length >  maxGraphS){
 					sparkdownloadline_data.shift();
 				}					
@@ -342,6 +354,9 @@ function get_speedtest(){
 				//console.log(data)
 			   $("#downloadtest").html(data.speeds.down);
 				$("#uploadtest").html(data.speeds.up);
+				$("#downloadtestavg").html(data.speeds.avg_down);
+				$("#uploadtestavg").html(data.speeds.avg_up);
+				$("#total_speed_tests").html(data.speeds.total_tests);
 				$("#speedtest").html(data.speeds.mtime);
 				//$("#nextspeedtest").html('<strong>Next Run</strong>: '+data.speeds.next);			
 		}

@@ -1,0 +1,25 @@
+<div class="modal-header">
+	<h5 class="modal-title" id="exampleModalLabel">Help - Method</h5>
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	</div>
+	<div class="modal-body">
+		<p>Method means which way the server is aquiring data from Dishy. Change inside congif.inc.php</p>
+		<p><strong>BROWSER</strong> - Requires you to have a browser open and accessing the web app so that the server can read the stats. 
+		This is simple but can cause issues if too many tabs are open viewing this.<br><br>
+		Speedtest will not operate using this method. The more reliable and consistent method is CLI.</p>
+
+		<p><strong>CLI</strong> - Uses cron jobs and hidden screen sessions to update the server. This runs all the time and will collect data even if you are not viewing the page.<br><br>
+		
+		In the scripts/binbash folder you will find two .sh files. You can modify them (path), and place them on your system. Run each one in a screen session.
+		
+		<br><br>
+		The speedtest is found in script/cron/php/speedtest.cron.php.<br>Add that to your cron job.<br>Ex: */5 * * * * php /your/install/path/here/speedtest.cron.php.<br><br>
+		Please do not run every minute. Be kind to Sats and Servers
+		</p>
+	</div>
+	<div class="modal-footer">
+	<!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-primary">Save changes</button>-->
+</div>

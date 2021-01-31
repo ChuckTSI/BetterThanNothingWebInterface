@@ -220,14 +220,22 @@ require('boot.inc.php');
 				</div>
 			</div>
 			
-			<div class="row border-bottom"  style="font-size: 90%; margin-top: 10px;">
+			<div class="row"  style="font-size: 90%; margin-top: 10px;">
 				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;DOWN</strong></div> </div>
 				<div class="col-4 text-left"><span id="downloadtest" style=""></span></div>
 				<div class="col-1 text-right"><div style="white-space: nowrap;"><strong>UP:</strong></div> </div>
 				<div class="col-4 text-left"><span id="uploadtest"></span></div>
-				<div class="col-12 col-lg-12">
-					<small><span style="white-space: nowrap;" id="speedtest" style=""></span></small> 
-					<small class="text-muted"> | Runs every 15 mins | <a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['speed_test_history_basename']; ?>">DOWNLOAD HISTORY</a> </small> 
+				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;AVG</strong></div> </div>
+				<div class="col-4 text-left"><span id="downloadtestavg" style=""></span></div>
+				<div class="col-1 text-right"><div style="white-space: nowrap;"><strong>AVG:</strong></div> </div>
+				<div class="col-4 text-left"><span id="uploadtestavg"></span></div>
+			</div>
+			<div class="row "  style="font-size: 90%;">
+				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;LASTRUN</strong></div> </div>
+				<div class="col-9 text-left"><small><span style="white-space: nowrap;" id="speedtest" style=""></span> | Runs every 15 mins </small> </div>
+				<div class="col-3 text-right">&nbsp;</div>
+				<div class="col-9 col-lg-12">					
+					<small class="text-muted"><a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['speed_test_history_basename']; ?>">DOWNLOAD HISTORY</a> .:| Total Tests: <strong><span id="total_speed_tests"></span></strong>|:. </small> 
 				</div>
 				<!--<div class="col-12 col-lg-12"><small><i class="fa fa-clock"></i> <span style="white-space: nowrap;" id="nextspeedtest" style=""></span></small></div>-->
 			</div>
@@ -251,7 +259,6 @@ require('boot.inc.php');
 				<div class="col-7 text-left"><span id="fractionObstructedCount" style=""></span> 
 					<a href="javascript://" onClick="play_obstructions()" id="pause_obs_playback_button" title="Playback changes" class="badge badge-pill badge-info"><i class="fa fa-play" style="font-size: 10px;"></i> </a> 
 					<a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['obstruction_log_basename']; ?>" title="Download CSV" class="badge badge-pill badge-info"><i class="fa fa-download" style="font-size: 10px;"></i> </a> 
-					
 					<a href="javascript://" onClick="live_obstructions()" id="live_obs_button" class="badge badge-pill badge-success fade">RETURN TO LIVE VIEW</a>
 				</div>	
 				

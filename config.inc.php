@@ -4,7 +4,12 @@
 $_CONFIG["username"] = "Chuck<strong>TSI</strong>";
 $_CONFIG["path"] = '/var/www/html';
 $_CONFIG["max_graph_seconds"] = '160'; // Seconds
+
 $_CONFIG["record"]['obstructions'] = true; // false or true. Only records changes in obtructions!
+$_CONFIG['results']['obstruction_log_basename'] = 'obstructions_log.csv'; // csv file
+
+$_CONFIG["history"]['speedstests'] = true;
+$_CONFIG['results']['speed_test_history_basename'] = 'speedtest_history.csv'; // csv file
 
 // Change these at your own peril.
 
@@ -22,13 +27,17 @@ if(is_dir($_CONFIG["path"].'/ramdisk')){
 	$datadir = 'data';
 }
 $_CONFIG["data_path"] = '/var/www/html/'.$datadir;
+$_CONFIG["web_data_path"] = $datadir;
 
 // Files
 $_CONFIG['files']['maxspeed'] = $_CONFIG["path"].'/'.$datadir.'/maxspeeds.ser'; // Serialized array of max speeds up and down.
 $_CONFIG['files']['dishy'] = $_CONFIG["path"].'/'.$datadir.'/dishy.json'; // Serialized array of max speeds up and down.
 $_CONFIG['files']['dishy_history_12'] = $_CONFIG["path"].'/'.$datadir.'/history_12.json'; // Last 12 Hours
+$_CONFIG['files']['speedtest_history'] = $_CONFIG["path"].'/'.$datadir.'/speedtest_history.json'; // Last 12 Hours
 $_CONFIG['results']['speed_test'] = $_CONFIG["path"].'/'.$datadir.'/speedtest.txt'; // Plain text file
-$_CONFIG['results']['obstruction_log'] = $_CONFIG["path"].'/'.$datadir.'/obstructions_log.txt'; // Plain text file
+
+$_CONFIG['results']['speed_test_history'] = $_CONFIG["path"].'/'.$datadir.'/'.$_CONFIG['results']['speed_test_history_basename']; 
+$_CONFIG['results']['obstruction_log'] = $_CONFIG["path"].'/'.$datadir.'/'.$_CONFIG['results']['obstruction_log_basename']; 
 
 // Urls
 $_CONFIG['ajax']['speed_test'] = 'ajax/json/speedtest.php';
