@@ -1,5 +1,9 @@
 <?php
 
+spl_autoload_register(function ($class) {
+    include 'lib/' . $class . '.class.php';
+});
+
 if(getcwd() != $_CONFIG["path"]){
 	$errors[] = '<h4 class="alert-heading"><strong>Incorrect Folder</strong></h4>Your install lives in: '.getcwd().'<br>Your config says: '.$_CONFIG["path"].'<br>Please edit the $_CONFIG["path"] config.inc.php';
 }

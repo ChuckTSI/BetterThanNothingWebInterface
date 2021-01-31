@@ -28,7 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Obstructions can now be recorded for historical. $_CONFIG["record"]['obstructions'] = true;
+- Obstructions can be downloaded in csv format.
 - Playback the Obstruction.
+- Added Pause Button
+- Added Speedtest History and download CSV
+- Added Mouseover Title Timestamp to Max Min Speeds (Desktop Browser only)
 
 ### Changed
 - UI More Stable

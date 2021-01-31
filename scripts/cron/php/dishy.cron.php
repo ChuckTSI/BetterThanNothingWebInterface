@@ -25,9 +25,11 @@ if(strtoupper($_CONFIG["dishy"]['update_method']) == "CLI"){
 	if($maxspeeds){		
 		if($maxspeeds['down'] < $max["down"]){
 			$maxspeeds['down'] = $max['down'];
+			$maxspeeds['down_time'] = date("Y-m-d H:i:s",time());
 		}
 		if($maxspeeds['up'] < $max["up"]){
 			$maxspeeds['up'] = $max['up'];
+			$maxspeeds['up_time'] = date("Y-m-d H:i:s",time());
 		}
 		file_put_contents($maxspeedfile,serialize($maxspeeds));
 	} else {

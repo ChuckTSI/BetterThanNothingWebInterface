@@ -40,6 +40,8 @@ require('boot.inc.php');
 		<!-- Custom styles for this template -->
 		<link  rel="stylesheet" href="css/site.css"></link>
 
+	
+
 		<script>
 		
 		var maxGraphS = <?php echo $_CONFIG["max_graph_seconds"]; ?>;
@@ -225,7 +227,7 @@ require('boot.inc.php');
 				<div class="col-4 text-left"><span id="uploadtest"></span></div>
 				<div class="col-12 col-lg-12">
 					<small><span style="white-space: nowrap;" id="speedtest" style=""></span></small> 
-					<small class="text-muted"> | Runs every 15 mins</small>
+					<small class="text-muted"> | Runs every 15 mins | <a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['speed_test_history_basename']; ?>">DOWNLOAD HISTORY</a> </small> 
 				</div>
 				<!--<div class="col-12 col-lg-12"><small><i class="fa fa-clock"></i> <span style="white-space: nowrap;" id="nextspeedtest" style=""></span></small></div>-->
 			</div>
@@ -247,7 +249,9 @@ require('boot.inc.php');
 				<!--<br><div style="margin-top: -5px; font-size: 10px;">&nbsp;&nbsp;&nbsp;due to obstructions in the last 24 hours</div>-->
 				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;CHANGES</strong></div></div>
 				<div class="col-7 text-left"><span id="fractionObstructedCount" style=""></span> 
-					<a href="javascript://" onClick="play_obstructions()" id="pause_obs_playback_button" class="badge badge-pill badge-info"><i class="fa fa-play" style="font-size: 10px;"></i> </a> 
+					<a href="javascript://" onClick="play_obstructions()" id="pause_obs_playback_button" title="Playback changes" class="badge badge-pill badge-info"><i class="fa fa-play" style="font-size: 10px;"></i> </a> 
+					<a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['obstruction_log_basename']; ?>" title="Download CSV" class="badge badge-pill badge-info"><i class="fa fa-download" style="font-size: 10px;"></i> </a> 
+					
 					<a href="javascript://" onClick="live_obstructions()" id="live_obs_button" class="badge badge-pill badge-success fade">RETURN TO LIVE VIEW</a>
 				</div>	
 				

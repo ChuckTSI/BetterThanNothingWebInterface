@@ -86,6 +86,10 @@ window.onload = function() {
 		 openmodal('html',thisclicked)
 	});
 
+		 $(document).ready(function() {
+            $('.tooltip').tooltipster();
+        });
+
 //<a href="javascript://" class="nocolor" onClick="openmodal('html','coming-soon.html');">
 
 };
@@ -269,10 +273,9 @@ function get_dishy(){
 				}					
 				$('#sparklinedash3').sparkline(sparkdownloadline_data, sparklineconfig3)
 
-				$("#maxthroughputdown").text(maxthroughdown);
-				$("#maxthroughputup").text(maxthroughup);
+				$("#maxthroughputdown").html('<div title="'+data.dishGetStatus.maxspeeds.down_time+'">'+maxthroughdown+'</div>');
+				$("#maxthroughputup").html('<div title="'+data.dishGetStatus.maxspeeds.up_time+'">'+maxthroughup+'</div>');
 
-				
 
 				//#####################################################################
 				// OBSTRUCTIONS
@@ -299,6 +302,7 @@ function get_dishy(){
 					wedgeFractionObstructedDataSet(data.dishGetStatus.obstructionStats.wedgeFractionObstructed);
 				}
 				//console.log(config.data.datasets);
+
 				
 				
 		}
@@ -365,7 +369,7 @@ function play_obstructions(){
 		clearTimeout(timer_play_obstructions);
 		obstruction_play_key = 0;
 		obstruction_play_status = false;
-
+		
 	} else {
 		$.each(obstruction_obj, function( index, values ) {
 
@@ -393,12 +397,14 @@ function play_obstructions(){
 				clearTimeout(timer_play_obstructions);
 				obstruction_play_key = 0;
 				obstruction_play_status = false;
+				$("#pause_obs_playback_button").removeClass('fade');
 			 }
 		 });
 	}	
 }
 
 function live_obstructions(){
+
 	obstruction_play_status = false;
 	obstruction_update();
 	obstruction_play_key = 0;
@@ -407,6 +413,7 @@ function live_obstructions(){
 	$("#pause_obs_playback_button").removeClass('fade');
 	$("#live_obs_button").addClass('fade');
 	$("#playback_obs_perc_container").addClass('fade');
+	$("#obsdatetime").html('<div class="badge badge-pill badge-success" style="position: absolute; font-size: 14px; top: -20px;">LIVE</div>');
 }
 
 function obstruction_update(){
@@ -433,6 +440,8 @@ function obstructions_records(){
 			}
 		});
 	}
+
+	
 
 	timer_get_obstructions_records = setTimeout(obstructions_records,5000); // Every 5 seconds
 
