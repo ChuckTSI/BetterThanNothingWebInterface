@@ -282,7 +282,7 @@ function get_dishy(){
 			// Set the max range of the chart of top recorded speed.
 			sparklineconfig2.chartRangeMax = parseFloat(maxthroughup.match(/[\d\.]+/))
 
-			console.log("UP"+sparkline_upspeed+" "+sparkline_downspeed);
+			//console.log("UP"+sparkline_upspeed+" "+sparkline_downspeed);
 			sparkuploadline_data.push(sparkline_upspeed)		
 			if(sparkuploadline_data.length > maxGraphS){
 				sparkuploadline_data.shift();
