@@ -38,9 +38,7 @@ require('boot.inc.php');
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
 
 		<!-- Custom styles for this template -->
-		<link  rel="stylesheet" href="css/site.css"></link>
-
-	
+		<link  rel="stylesheet" href="css/site.css"></link>	
 
 		<script>
 		
@@ -51,11 +49,20 @@ require('boot.inc.php');
 			'60:149': '#ffc107',
 			'150:1000': 'red'
 		})
+
+		var ping_range_map2 = $.range_map({
+			'1:59': 'red'
+		})
+
+
+		var speedtesthistory_range_map = ['#ec77f9','#7a6fbb'];
+
+		// PING
 		const sparklineconfig = {
 		  type: 'bar',
 		  height: '50',
 		  barWidth: '3',
-		  disableInteraction: true,
+		  disableInteraction: false,
 		  resize: false,
 		  barSpacing: '0',
           chartRangeMax:300,
@@ -64,7 +71,7 @@ require('boot.inc.php');
 		}
 
 		
-
+		// DOWN
 		const sparklineconfig2 = {
 		  type: 'line',
 		  height: '50',
@@ -79,6 +86,7 @@ require('boot.inc.php');
 			  spotRadius: 0
 		}
 
+		// UP
 		const sparklineconfig3 = {
 		  type: 'line',
 		  height: '50',
@@ -91,6 +99,19 @@ require('boot.inc.php');
 		  lineColor: '#7a6fbb',
 			  spotColor: false,
 			  spotRadius: 0
+		}
+
+
+		 // SPEEDTEST HISTORY
+		const sparklineconfig4 = {
+		  type: 'bar',
+		  height: '50',
+		  barWidth: '4',
+		  disableInteraction: false,
+		  resize: false,
+		  barSpacing: '0',
+          chartRangeMax:150,
+		  stackedBarColor: speedtesthistory_range_map
 		}
 		</script>
 
@@ -148,12 +169,39 @@ require('boot.inc.php');
 
 			</div>
 
+			
+
+			
+			<!-- LATENCY -->
+			<div class="row  border-top" style="margin-top: 20px;">
+				<div class="col-12 <?php echo $_CONFIG['styles']['bg_bars']; ?>">
+					<div style="white-space: nowrap;" class="section_title">
+						<i class="fa fa-arrows-alt-h"></i> <strong>LATENCY</strong>  
+						<small><a href="javascript://" onClick="resetvar('peakPingTracker');" style="float: right; margin-top: 2px;" >RESET PEAK: <span id="jspingpeak"></span></a></small>
+					</div> 
+				</div>
+			</div>
+
+			<div class="row border-bottom"  style="font-size: 90%; margin-top: 10px;">
+				<div class="col-3 text-right"><strong>NOW</strong> </div>
+				<div class="col-3 text-left"><div id="latency">--- ms</div></div>
+				<div class="col-3 text-right"><strong>3 MIN AVG</strong> </div>
+				<div class="col-3 text-left"><div id="avglatency">--- ms</div></div>
+				<div class="col-12 text-left">
+					<div style="height: 50px; position: relative;">
+						<div id="sparklinedash" style="opacity: 0.5; position: absolute; z-index: 1; height: 50px;">
+							<span class="bar"></span>
+						</div>	
+					</div>
+				</div>
+			</div>
+
 			<!-- THROUGHPUT -->
 			<div class="row  border-top" style="margin-top: 20px;">
 				<div class="col-12 <?php echo $_CONFIG['styles']['bg_bars']; ?>">
 					<div style="white-space: nowrap;" class="section_title">
 						<i class="fa fa-file-import"></i> <strong>THROUGHPUT</strong>  
-						<a href="javascript://" onClick="resetajax('peak');"><sup style="float: right; margin-top: 5px;" class="badge badge-pill badge-warning">RESET PEAK</sup></a>
+						<small><a href="javascript://" onClick="resetajax('peak');" style="float: right; margin-top: 2px;" >RESET PEAK: <span id="jspingpeak"></span></a></small>
 					</div> 
 				</div>
 			</div>
@@ -185,31 +233,6 @@ require('boot.inc.php');
 			</div>
 
 			
-			<!-- LATENCY -->
-			<div class="row  border-top" style="margin-top: 20px;">
-				<div class="col-12 <?php echo $_CONFIG['styles']['bg_bars']; ?>">
-					<div style="white-space: nowrap;" class="section_title">
-						<i class="fa fa-arrows-alt-h"></i> <strong>LATENCY</strong>  
-						<a href="javascript://" onClick="resetvar('peakPingTracker');"><sup style="float: right; margin-top: 5px;" class="badge badge-pill badge-warning">RESET PEAK: <span id="jspingpeak"></span></sup></a>
-					</div> 
-				</div>
-			</div>
-
-			<div class="row border-bottom"  style="font-size: 90%; margin-top: 10px;">
-				<div class="col-3 text-right"><strong>NOW:</strong> </div>
-				<div class="col-3 text-left"><div id="latency">--- ms</div></div>
-				<div class="col-3 text-right"><strong>3 MIN AVG:</strong> </div>
-				<div class="col-3 text-left"><div id="avglatency">--- ms</div></div>
-				<div class="col-12 text-left">
-					<div style="height: 50px; position: relative;">
-						<div id="sparklinedash" style="opacity: 0.5; position: absolute; z-index: 1; height: 50px;">
-							<span class="bar"></span>
-						</div>	
-					</div>
-				</div>
-			</div>
-
-			
 
 			<!-- SPEEDTEST -->
 			<div class="row  border-top" style="margin-top: 20px;">
@@ -221,23 +244,44 @@ require('boot.inc.php');
 			</div>
 			
 			<div class="row"  style="font-size: 90%; margin-top: 10px;">
-				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;DOWN</strong></div> </div>
+				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong style="color: #7a6fbb">DOWN</strong></div> </div>
 				<div class="col-4 text-left"><span id="downloadtest" style=""></span></div>
-				<div class="col-1 text-right"><div style="white-space: nowrap;"><strong>UP:</strong></div> </div>
+				<div class="col-1 text-right"><div style="white-space: nowrap;"><strong style="color: #ec77f9;">UP</strong></div> </div>
 				<div class="col-4 text-left"><span id="uploadtest"></span></div>
 				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;AVG</strong></div> </div>
 				<div class="col-4 text-left"><span id="downloadtestavg" style=""></span></div>
 				<div class="col-1 text-right"><div style="white-space: nowrap;"><strong>AVG:</strong></div> </div>
 				<div class="col-4 text-left"><span id="uploadtestavg"></span></div>
+				
 			</div>
 			<div class="row "  style="font-size: 90%;">
 				<div class="col-3 text-right"><div style="white-space: nowrap;"><strong>&nbsp;LASTRUN</strong></div> </div>
-				<div class="col-9 text-left"><small><span style="white-space: nowrap;" id="speedtest" style=""></span> | Runs every 15 mins </small> </div>
+				<div class="col-9 text-left"><small><span style="white-space: nowrap;" id="speedtest" style=""></span> | Runs every 15 mins  |  .:| Total Tests: <strong><span id="total_speed_tests"></span></strong>|:.  </small> </div>
 				<div class="col-3 text-right">&nbsp;</div>
 				<div class="col-9">					
-					<small class="text-muted"><a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['speed_test_history_basename']; ?>">DOWNLOAD HISTORY</a> .:| Total Tests: <strong><span id="total_speed_tests"></span></strong>|:. </small> 
+					<small class="text-muted">
+					HISTORY 
+					(<a href="<?php echo $_CONFIG["web_data_path"].'/'.$_CONFIG['results']['speed_test_history_basename']; ?>">DOWNLOAD CSV</a>)
+					(<a href="javascript://" onClick="$('#history_speed_test_graph_container').toggle();">TOGGLE GRAPH</a>)
+					</small> 
 				</div>
 				<!--<div class="col-12 col-lg-12"><small><i class="fa fa-clock"></i> <span style="white-space: nowrap;" id="nextspeedtest" style=""></span></small></div>-->
+			</div>
+			<div class="row" style="margin-top: 20px;" id="history_speed_test_graph_container">
+				<div class="col-12 text-left">		
+					<div style="height: 50px; position: relative; opacity: 0.9;">
+					<div id="sparklinedash4" style="position: absolute; z-index: 2; height: 50px;">
+						<span class="line"></span>			
+					</div>					
+					</div>
+				</div>
+				<div class="col-2 border-top border-right border-left text-left"><small><?php echo date("gA",strtotime('-24 hours')); ?></small></div>
+				<div class="col-2 border-top border-right text-center"><small><?php echo date("gA",strtotime('-19 hours')); ?></small></div>
+				<div class="col-2 border-top border-right text-center"><small><?php echo date("gA",strtotime('-14 hours')); ?></small></div>
+				<div class="col-2 border-top border-right text-center"><small><?php echo date("gA",strtotime('-9 hours')); ?></small></div>
+				<div class="col-2 border-top border-right text-center"><small><?php echo date("gA",strtotime('-4 hours')); ?></small></div>
+				<div class="col-2 border-top text-right border-right"><small>NOW</small></div>
+
 			</div>
 			
 			<!-- OBSTRUCTIONS -->
@@ -246,6 +290,7 @@ require('boot.inc.php');
 				<div class="col-12 <?php echo $_CONFIG['styles']['bg_bars']; ?>">
 					<div style="white-space: nowrap;" class="section_title">
 						<i class="fa fa-tree"></i><strong>&nbsp;OBSTRUCTIONS</strong>
+						<small><a href="javascript://" onClick="resetajax('obs');" style="float: right; margin-top: 2px;" >RESET CHANGES</a></small>
 					</div> 
 				</div>
 			</div>
@@ -304,6 +349,7 @@ require('boot.inc.php');
 	<script>
 
 	var ajax_speedtest_url = "<?php echo $_CONFIG['ajax']['speed_test']; ?>";
+	var ajax_speedtest_history_url = "<?php echo $_CONFIG['ajax']['speed_test_history']; ?>";
 	var ajax_dishy_url = "<?php echo $_CONFIG['ajax']['dishy']; ?>";
 
 	</script>

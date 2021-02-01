@@ -6,6 +6,7 @@ var peakPingTracker = 1;
 const sparkpingline_data = []
 const sparkuploadline_data = []
 const sparkdownloadline_data = []
+const sparkspeedtesthistoryline_data = []
 
 
 // This updates the chart with Obstruction Data
@@ -86,11 +87,7 @@ window.onload = function() {
 		 openmodal('html',thisclicked)
 	});
 
-		 $(document).ready(function() {
-            $('.tooltip').tooltipster();
-        });
-
-//<a href="javascript://" class="nocolor" onClick="openmodal('html','coming-soon.html');">
+	
 
 };
 
@@ -149,171 +146,187 @@ function get_dishy(){
 				data.dishGetStatus.state = "DL UNRESPONSIVE";
 			}
 
-				$("#sw_rev").text(data.dishGetStatus.deviceInfo.softwareVersion)
+			if(data.dishGetStatus.hasOwnProperty('uplinkThroughputBps')){
+				//data.dishGetStatus.state = "UNRESPONSIVE";
+			} else {
+				data.dishGetStatus.state = "UL UNRESPONSIVE";
+			}
 
-			   if(data.dishGetStatus.downlinkThroughputBps != ""){
-					var downspeed = bytes_to_megabits(data.dishGetStatus.downlinkThroughputBps);
-			   } else {
-					var downspeed = "--";
-			   }
-				if(data.dishGetStatus.uplinkThroughputBps != ""){
-					var upspeed = bytes_to_megabits(data.dishGetStatus.uplinkThroughputBps);
-			   } else {
-					var upspeed = "--";
-			   }
+			$("#sw_rev").text(data.dishGetStatus.deviceInfo.softwareVersion)
 
-			   //#####################################################################
-			   // HEADER
-				if(data.dishGetStatus.state == "CONNECTED"){
-				 $("#state").addClass('badge-success');
-				 $("#state").removeClass('badge-danger'); 
-				 $("#state").html('<i class="fas fa-satellite-dish"></i> '+data.dishGetStatus.state);
-				  $("#nosat").addClass("fade");
-			   } else {
-				 $("#state").addClass('badge-danger');
-				 $("#state").removeClass('badge-success');
-				 $("#state").text(data.dishGetStatus.state);
-				 $("#nosat").removeClass("fade");
-			   }
+			if(isNaN(data.dishGetStatus.downlinkThroughputBps)){
+				var downspeed = "--";
+			} else {
+				var downspeed = bytes_to_megabits(data.dishGetStatus.downlinkThroughputBps);
+			}
 
-			   if(data.dishGetStatus.popPingLatencyMs){
-					
-					/*
-					For competitive online gaming
-					Ookla says players should be in "winning" shape with latency or ping of 59ms or less, 
-					and "in the game" with latency or ping of up to 129ms
-					*/
-					
-					var latency = data.dishGetStatus.popPingLatencyMs.toFixed();
+			if(isNaN(data.dishGetStatus.uplinkThroughputBps)){
+				var upspeed = "--";
+			} else {
+				var upspeed = bytes_to_megabits(data.dishGetStatus.uplinkThroughputBps);
+			}
 
-					if(latency < 60){
-						$("#latency").css('color','green');
-					} else if(latency < 130){
-						$("#latency").css('color','orange');
-					} else if(latency >= 130){
-						$("#latency").css('color','red');
-					}
+		   //console.log('DS:'+downspeed+'   US:'+upspeed);
 
-					if(parseInt(latency) > parseInt(peakPingTracker)){	
-						peakPingTracker = latency;						
-					}
+		   //#####################################################################
+		   // HEADER
+			if(data.dishGetStatus.state == "CONNECTED"){
+			 $("#state").addClass('badge-success');
+			 $("#state").removeClass('badge-danger'); 
+			 $("#state").html('<i class="fas fa-satellite-dish"></i> '+data.dishGetStatus.state);
+			  $("#nosat").addClass("fade");
+		   } else {
+			 $("#state").addClass('badge-danger');
+			 $("#state").removeClass('badge-success');
+			 $("#state").text(data.dishGetStatus.state);
+			 $("#nosat").removeClass("fade");
+		   }
 
-					$("#jspingpeak").text(peakPingTracker+'ms')
-					sparklineconfig.chartRangeMax = peakPingTracker
-					$("#latency").text(latency+' ms');
+		   if(data.dishGetStatus.popPingLatencyMs){
+				
+				/*
+				For competitive online gaming
+				Ookla says players should be in "winning" shape with latency or ping of 59ms or less, 
+				and "in the game" with latency or ping of up to 129ms
+				*/
+				
+				var latency = data.dishGetStatus.popPingLatencyMs.toFixed();
 
-					if(sparkpingline_data.length > maxGraphS){
-						sparkpingline_data.shift();
-					}		
-					var latency_sum = 0;
-					for( var i = 0; i < sparkpingline_data.length; i++ ){
-						latency_sum += parseInt( sparkpingline_data[i], 10 ); //don't forget to add the base
-					}
-					var latency_avg = (latency_sum/sparkpingline_data.length).toFixed();
-					$("#avglatency").text(latency_avg+' ms');
-					
-					/*if(latency_avg < 60){
-						sparklineconfig.barColor = 'green';
-					} else if(latency_avg < 130){
-						sparklineconfig.barColor = 'orange';
-					} else if(latency_avg >= 130){
-						sparklineconfig.barColor = 'red';
-					}*/
-					
-					//console.log(`The sum is: ${latency_sum}. The average is: ${latency_avg}.`);
-					sparkpingline_data.push(latency)
-					$('#sparklinedash').sparkline(sparkpingline_data, sparklineconfig)
-
-			   } else {
-					$("#latency").text('--- ms');
-			   }
-	
-
-				//#####################################################################
-				// INFO
-				if(data.dishGetStatus.method == "CLI"){
-					if(uptimeTracker != data.dishGetStatus.deviceState.uptimeS){
-						uptimeTracker = data.dishGetStatus.deviceState.uptimeS
-						$("#updatenotrunning").remove();
-						uptimeRepeatCounter = 0;
-					} else {
-						uptimeRepeatCounter++;
-						if($("#updatenotrunning").length < 1 && uptimeRepeatCounter > 2){
-							$("#main_container").prepend('<div class="alert alert-danger" id="updatenotrunning"><div style="font-size: 14px;">It seems as though your <i>starlink.update.sh</i> is not running. This message will go away once you fix the issue.</div></div>');
-						}
-					}
+				if(latency < 60){
+					$("#latency").css('color','green');
+				} else if(latency < 130){
+					$("#latency").css('color','orange');
+				} else if(latency >= 130){
+					$("#latency").css('color','red');
 				}
-				$("#uptimeS").text(format_sec(data.dishGetStatus.deviceState.uptimeS));
-				$("#snr").text(data.dishGetStatus.snr);
-				
-				$("#gmethod").text(data.dishGetStatus.method);
 
-				//#####################################################################
-				// THROUGHPUT
-				$("#downloadlinkthru").text(downspeed);				
-				$("#uploadlinkthru").text(upspeed);	
-				
-				var maxthroughdown = bytes_to_megabits(data.dishGetStatus.maxspeeds.down);
-				var maxthroughup = bytes_to_megabits(data.dishGetStatus.maxspeeds.up);
+				if(parseInt(latency) > parseInt(peakPingTracker)){	
+					peakPingTracker = latency;						
+				}
 
-				if(upspeed == "--"){
-					sparkline_upspeed = 0;
+				$("#jspingpeak").text(peakPingTracker+'ms')
+				sparklineconfig.chartRangeMax = peakPingTracker
+				$("#latency").text(latency+' ms');
+
+				if(sparkpingline_data.length > maxGraphS){
+					sparkpingline_data.shift();
+				}		
+				var latency_sum = 0;
+				for( var i = 0; i < sparkpingline_data.length; i++ ){
+					latency_sum += parseInt( sparkpingline_data[i], 10 ); //don't forget to add the base
+				}
+				var latency_avg = (latency_sum/sparkpingline_data.length).toFixed();
+				$("#avglatency").text(latency_avg+' ms');
+				
+				/*if(latency_avg < 60){
+					sparklineconfig.barColor = 'green';
+				} else if(latency_avg < 130){
+					sparklineconfig.barColor = 'orange';
+				} else if(latency_avg >= 130){
+					sparklineconfig.barColor = 'red';
+				}*/
+				
+				//console.log(`The sum is: ${latency_sum}. The average is: ${latency_avg}.`);
+				sparkpingline_data.push(latency)
+				$('#sparklinedash').sparkline(sparkpingline_data, sparklineconfig)
+
+		   } else {
+				$("#latency").text('--- ms');
+		   }
+
+
+			//#####################################################################
+			// INFO
+			if(data.dishGetStatus.method == "CLI"){
+				if(uptimeTracker != data.dishGetStatus.deviceState.uptimeS){
+					uptimeTracker = data.dishGetStatus.deviceState.uptimeS
+					$("#updatenotrunning").remove();
+					uptimeRepeatCounter = 0;
 				} else {
-					sparkline_upspeed = parseFloat(upspeed.match(/[\d\.]+/));
+					uptimeRepeatCounter++;
+					if($("#updatenotrunning").length < 1 && uptimeRepeatCounter > 2){
+						$("#main_container").prepend('<div class="alert alert-danger" id="updatenotrunning"><div style="font-size: 14px;">It seems as though your <i>starlink.update.sh</i> is not running. This message will go away once you fix the issue.</div></div>');
+					}
 				}
-				
-				// UPLOAD CHART
-				sparklineconfig2.chartRangeMax = parseFloat(maxthroughup.match(/[\d\.]+/))
-				sparkuploadline_data.push(sparkline_upspeed)		
-				if(sparkuploadline_data.length > maxGraphS){
-					sparkuploadline_data.shift();
-				}					
-				$('#sparklinedash2').sparkline(sparkuploadline_data, sparklineconfig2)
-				
-				
-				if(downspeed == "--"){
-					sparkline_downspeed = 0;
-				} else {
-					sparkline_downspeed = parseFloat(downspeed.match(/[\d\.]+/));
-				}
-
-				// DOWNLOAD CHART
-				sparklineconfig3.chartRangeMax = parseFloat(maxthroughdown.match(/[\d\.]+/))
-				sparkdownloadline_data.push(sparkline_downspeed)		
-				if(sparkdownloadline_data.length >  maxGraphS){
-					sparkdownloadline_data.shift();
-				}					
-				$('#sparklinedash3').sparkline(sparkdownloadline_data, sparklineconfig3)
-
-				$("#maxthroughputdown").html('<div title="'+data.dishGetStatus.maxspeeds.down_time+'">'+maxthroughdown+'</div>');
-				$("#maxthroughputup").html('<div title="'+data.dishGetStatus.maxspeeds.up_time+'">'+maxthroughup+'</div>');
+			}
+			$("#uptimeS").text(format_sec(data.dishGetStatus.deviceState.uptimeS));
+			$("#snr").text(data.dishGetStatus.snr);
+			
+			$("#gmethod").text(data.dishGetStatus.method);
 
 
-				//#####################################################################
-				// OBSTRUCTIONS
-			   
-				$("#fractionObstructed").text((data.dishGetStatus.obstructionStats.fractionObstructed*100).toFixed(2)+'%');
-				if(obstructed != "" && obstructed != data.dishGetStatus.obstructionStats.last24hObstructedS){
-					obstructed = data.dishGetStatus.obstructionStats.last24hObstructedS;
-					$("#obstruction_icon").removeClass("fade");
-				} 
-				if(obstructed == data.dishGetStatus.obstructionStats.last24hObstructedS){
-					$("#obstruction_icon").addClass("fade");
-				}
-				
-				var twentyFourHoursS = 3600*24;
-				if(data.dishGetStatus.deviceState.uptimeS < twentyFourHoursS){
-					var obstructionUptime = data.dishGetStatus.deviceState.uptimeS
-				} else {
-					var obstructionUptime= twentyFourHoursS
-				}
-				
-				var obstructionDowntime = data.dishGetStatus.obstructionStats.last24hObstructedS/obstructionUptime;
-				$("#last24hObstructedS").text(format_sec(data.dishGetStatus.obstructionStats.last24hObstructedS)+ ' ('+obstructionDowntime.toFixed(3)+'%)');	
-				if(obstruction_play_status == false){
-					wedgeFractionObstructedDataSet(data.dishGetStatus.obstructionStats.wedgeFractionObstructed);
-				}
-				//console.log(config.data.datasets);
+			//#####################################################################
+			// THROUGHPUT
+
+			$("#downloadlinkthru").text(downspeed);				
+			$("#uploadlinkthru").text(upspeed);	
+			
+			var maxthroughdown = bytes_to_megabits(data.dishGetStatus.maxspeeds.down);
+			var maxthroughup = bytes_to_megabits(data.dishGetStatus.maxspeeds.up);
+
+
+			if(downspeed == "--"){
+				sparkline_downspeed = 0;
+			} else {
+				sparkline_downspeed = parseFloat(downspeed.match(/[\d\.]+/));
+			}
+
+			if(upspeed == "--"){
+				sparkline_upspeed = 0;
+			} else {
+				sparkline_upspeed = parseFloat(upspeed.match(/[\d\.]+/));
+			}
+			
+			// UPLOAD CHART
+			
+			// Set the max range of the chart of top recorded speed.
+			sparklineconfig2.chartRangeMax = parseFloat(maxthroughup.match(/[\d\.]+/))
+
+			console.log("UP"+sparkline_upspeed+" "+sparkline_downspeed);
+			sparkuploadline_data.push(sparkline_upspeed)		
+			if(sparkuploadline_data.length > maxGraphS){
+				sparkuploadline_data.shift();
+			}					
+			$('#sparklinedash2').sparkline(sparkuploadline_data, sparklineconfig2)			
+
+			// DOWNLOAD CHART
+			sparklineconfig3.chartRangeMax = parseFloat(maxthroughdown.match(/[\d\.]+/))
+			sparkdownloadline_data.push(sparkline_downspeed)	
+
+			if(sparkdownloadline_data.length >  maxGraphS){
+				sparkdownloadline_data.shift();
+			}					
+			$('#sparklinedash3').sparkline(sparkdownloadline_data, sparklineconfig3)
+
+			$("#maxthroughputdown").html('<div title="'+data.dishGetStatus.maxspeeds.down_time+'">'+maxthroughdown+'</div>');
+			$("#maxthroughputup").html('<div title="'+data.dishGetStatus.maxspeeds.up_time+'">'+maxthroughup+'</div>');
+
+
+			//#####################################################################
+			// OBSTRUCTIONS
+		   
+			$("#fractionObstructed").text((data.dishGetStatus.obstructionStats.fractionObstructed*100).toFixed(2)+'%');
+			if(obstructed != "" && obstructed != data.dishGetStatus.obstructionStats.last24hObstructedS){
+				obstructed = data.dishGetStatus.obstructionStats.last24hObstructedS;
+				$("#obstruction_icon").removeClass("fade");
+			} 
+			if(obstructed == data.dishGetStatus.obstructionStats.last24hObstructedS){
+				$("#obstruction_icon").addClass("fade");
+			}
+			
+			var twentyFourHoursS = 3600*24;
+			if(data.dishGetStatus.deviceState.uptimeS < twentyFourHoursS){
+				var obstructionUptime = data.dishGetStatus.deviceState.uptimeS
+			} else {
+				var obstructionUptime= twentyFourHoursS
+			}
+			
+			var obstructionDowntime = data.dishGetStatus.obstructionStats.last24hObstructedS/obstructionUptime;
+			$("#last24hObstructedS").text(format_sec(data.dishGetStatus.obstructionStats.last24hObstructedS)+ ' ('+obstructionDowntime.toFixed(3)+'%)');	
+			if(obstruction_play_status == false){
+				wedgeFractionObstructedDataSet(data.dishGetStatus.obstructionStats.wedgeFractionObstructed);
+			}
+			//console.log(config.data.datasets);
 
 				
 				
@@ -361,6 +374,45 @@ function get_speedtest(){
 				//$("#nextspeedtest").html('<strong>Next Run</strong>: '+data.speeds.next);			
 		}
 	});
+	$.ajax({ 
+		type: 'GET', 
+		url: ajax_speedtest_history_url , 
+		dataType: 'json',
+		success: function (data) { 
+
+			var speed_test_history_items = [];
+			var speed_test_history_length = data.length;
+
+			var max_speed_test_history_length;
+
+			if(speed_test_history_length > 186){
+				max_speed_test_history_length = 186;
+			} else {
+				max_speed_test_history_length = speed_test_history_length;
+			}
+			
+			// 560 is pixels width of UI
+			speed_test_history_bar_width = 560/speed_test_history_length;
+			
+			$.each(data,function(index, values){
+				var stib  = []; // Temp Array to format UP/DOWN
+				stib.push(Math.round(values[2].replace(" Mbps","")));
+				stib.push(Math.round(values[1].replace(" Mbps","")));
+
+				if(index > max_speed_test_history_length){
+					speed_test_history_items.shift();
+				} 
+
+				speed_test_history_items.push(stib);
+
+			})
+
+			sparklineconfig4.barWidth = speed_test_history_bar_width;
+			
+			$('#sparklinedash4').sparkline(speed_test_history_items, sparklineconfig4)	
+		}
+	});
+
 	timer_get_speedtest = setTimeout(get_speedtest,60000); // Every 15 Mins.
 	
 }
@@ -506,5 +558,7 @@ get_dishy();
 obstructions_records();
 setTimeout(obstruction_update,500);
 get_speedtest();
+
+//$("#history_speed_test_graph_container").css('display','none');
 
 

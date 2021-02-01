@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1] - 2021-01-31
+
+### Added
+- Recording Uptime
+- Speedtest History Graph
+
+### Changed
+- Small UI Changes
+- Fixed the Downlink Uplink Throughput Graph Bug.
+
+### Removed
+
+
 ## [0.1] - 2021-01-30
 
 ### Added
