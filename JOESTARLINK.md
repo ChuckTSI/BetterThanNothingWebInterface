@@ -137,3 +137,5 @@ All I can hope for at this point is that with the mass exodus of XPLORNET custom
 
 As for the monopolies providing the backhauls for people like Joe, hopefully they will be forced to lower their price in turn making it so starlink is not cheaper for 5 to 15 times the speed. Heaven forbid starlink hits their goal of 1Gbs/ Customer. THough I suspect those Gb connections will be used for companies like Joes to provide more affordable internet.
 
+<b>Final Answer</b>: Do you need 150Mbps Internet in the Country? Maybe. But probably not. 
+You could most likekly be VERY comofortable with 50/10. Even 75/15. AS long as it is reliable and makes sense for your situation.
