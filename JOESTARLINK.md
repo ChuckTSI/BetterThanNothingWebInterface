@@ -132,3 +132,8 @@
         </tr>
     </tbody>
 </table>
+
+All I can hope for at this point is that with the mass exodus of XPLORNET customers to StarLink, the service for the remainder of XPLORNET customers will get better. One can only hope.
+
+As for the monopolies providing the backhauls for people like Joe, hopefully they will be forced to lower their price in turn making it so starlink is not cheaper for 5 to 15 times the speed. Heaven forbid starlink hits their goal of 1Gbs/ Customer. THough I suspect those Gb connections will be used for companies like Joes to provide more affordable internet.
+
