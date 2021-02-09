@@ -34,5 +34,10 @@ You should then be able to access this tool via your browser: http://192.168.0.1
 
 Good luck!
 
+## Docker
+If you don't want to figure that stuff out and are comfortable with docker, you can just run the following:
+```
+docker-compose build && docker-compose up -d
+```
 
-
+Once built and running, you can view the status page at [http://localhost/BetterThanNothingWebInterface](http://localhost/BetterThanNothingWebInterface)

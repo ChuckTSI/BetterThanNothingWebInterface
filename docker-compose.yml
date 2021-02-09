@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  php-apache:
+    build: .
+    ports:
+      - 80:80
+    environment:
+      - TZ=US/Eastern
