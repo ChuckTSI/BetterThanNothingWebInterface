@@ -1,3 +1,5 @@
 #/bin/bash
 
-while true ; do php /var/www/html/btnwi/scripts/cron/php/dishy.history.cron.php & printf . & sleep 5; done
+require(dirname(__FILE__).'/../../../config.inc.php');
+
+while true ; do php $_CONFIG["path"]/scripts/cron/php/dishy.history.cron.php & printf . & sleep 5; done
