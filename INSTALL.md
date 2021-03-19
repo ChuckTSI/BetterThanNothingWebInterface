@@ -40,4 +40,4 @@ If you don't want to figure that stuff out and are comfortable with docker, you 
 docker-compose build && docker-compose up -d
 ```
 
-Once built and running, you can view the status page at [http://localhost/BetterThanNothingWebInterface](http://localhost/BetterThanNothingWebInterface)
+Once built and running, you can view the status page at [http://localhost/](http://localhost/)
